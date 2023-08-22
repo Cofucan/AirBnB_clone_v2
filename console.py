@@ -2,6 +2,9 @@
 """ Console Module """
 import cmd
 import sys
+
+from typing import List, Dict, Union
+
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -61,12 +64,12 @@ class HBNBCommand(cmd.Cmd):
             _cls = pline[: pline.find(".")]
 
             # isolate and validate <command>
-            _cmd = pline[pline.find(".") + 1 : pline.find("(")]
+            _cmd = pline[(pline.find(".")+1):(pline.find("("))]
             if _cmd not in HBNBCommand.dot_cmds:
                 raise Exception
 
             # if parantheses contain arguments, parse them
-            pline = pline[pline.find("(") + 1 : pline.find(")")]
+            pline = pline[(pline.find("(")+1):(pline.find(")"))]
             if pline:
                 # partition args: (<id>, [<delim>], [<*args>])
                 pline = pline.partition(", ")  # pline convert to tuple
@@ -128,13 +131,57 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+
+        args = args.split()
+        if args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+
+        params = self.parse_params(args[1:])
+        if not params:
+            return
+
+        new_instance = HBNBCommand.classes[args[0]]()
+        for key, value in params.items():
+            setattr(new_instance, key, value)
+        # storage = SQLStorage()
+        # storage.all()[args[0]].append(new_instance)
+
         storage.save()
         print(new_instance.id)
         storage.save()
+
+    def parse_params(self, params: List[str]) -> Union[dict, None]:
+        params_dict: Dict = {}
+        for param in params:
+            kv_pair: List = param.split('=')  # Separate the key and value
+            # If there are not 2 elements or elements contain spaces
+            if len(kv_pair) != 2 or ' ' in kv_pair[0] or ' ' in kv_pair[1]:
+                continue
+
+            key: str = kv_pair[0]
+            value: str = kv_pair[1]
+
+            # If value is an integer
+            if value.isnumeric():
+                params_dict[key] = int(value)
+                continue
+
+            # If value is a float
+            try:
+                params_dict[key] = float(value)
+                continue
+            except ValueError:
+                pass
+
+            # If value is a string
+            if value.startswith('\"') and value.endswith('\"'):
+                value = value.strip('\"')
+
+                value = ' '.join(value.split('_'))
+                params_dict[key] = value
+
+        return params_dict
 
     def help_create(self):
         """Help information for the create method"""
