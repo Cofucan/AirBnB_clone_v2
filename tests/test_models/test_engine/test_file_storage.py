@@ -1,19 +1,18 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
+import os
 import unittest
+
 from models.base_model import BaseModel
 from models import storage
-import os
 
 
-class test_fileStorage(unittest.TestCase):
+class TestFileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
     def setUp(self):
         """ Set up test environment """
-        del_list = []
-        for key in storage._FileStorage__objects.keys():
-            del_list.append(key)
+        del_list = list(storage._FileStorage__objects.keys())
         for key in del_list:
             del storage._FileStorage__objects[key]
 
@@ -71,7 +70,7 @@ class test_fileStorage(unittest.TestCase):
 
     def test_reload_empty(self):
         """ Load from an empty file """
-        with open('file.json', 'w') as f:
+        with open('file.json', 'w') as file:
             pass
         with self.assertRaises(ValueError):
             storage.reload()
