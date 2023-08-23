@@ -21,7 +21,7 @@ class test_fileStorage(unittest.TestCase):
         """Remove storage file at end of tests"""
         try:
             os.remove("file.json")
-        except:
+        except OSError:
             pass
 
     def test_obj_list_empty(self):
@@ -31,10 +31,9 @@ class test_fileStorage(unittest.TestCase):
     def test_new(self):
         """New object is correctly added to __objects"""
         new = BaseModel()
-        temp = None
         for obj in storage.all().values():
             temp = obj
-        self.assertTrue(new is temp)
+        self.assertTrue(temp is obj)
 
     def test_all(self):
         """__objects is properly returned"""
@@ -72,7 +71,7 @@ class test_fileStorage(unittest.TestCase):
 
     def test_reload_empty(self):
         """Load from an empty file"""
-        with open("file.json", "w") as file:
+        with open("file.json", "w") as f:
             pass
         with self.assertRaises(ValueError):
             storage.reload()
