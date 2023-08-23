@@ -139,8 +139,8 @@ class HBNBCommand(cmd.Cmd):
                 else:
                     obj = eval(my_list[0])(**kwargs)
                     storage.new(obj)
+                    storage.save()
                 print(obj.id)
-                obj.save()
 
             except SyntaxError:
                 print("** class name missing **")
@@ -227,11 +227,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(args).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -335,6 +335,7 @@ class HBNBCommand(cmd.Cmd):
                 new_dict.__dict__.update({att_name: att_val})
 
         new_dict.save()  # save updates to file
+        storage.save()
 
     def help_update(self):
         """ Help information for the update class """
