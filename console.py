@@ -168,12 +168,9 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[args[0]]()
         for key, value in params.items():
             setattr(new_instance, key, value)
-        # storage = SQLStorage()
-        # storage.all()[args[0]].append(new_instance)
 
         storage.save()
         print(new_instance.id)
-        storage.save()
 
     def parse_params(self, params: List[str]) -> Union[dict, None]:
         params_dict: Dict = {}
