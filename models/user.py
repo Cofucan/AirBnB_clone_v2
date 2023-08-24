@@ -19,6 +19,7 @@ class User(BaseModel, Base):
         places (sqlalchemy relationship): User-Place relationship.
         reviews (sqlalchemy relationship): User-Review relationship.
     """
+
     __tablename__ = "users"
     email = Column(String(128), nullable=False)
     password = Column(String(128), nullable=False)

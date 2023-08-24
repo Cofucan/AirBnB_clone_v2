@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 """Defines the BaseModel class."""
-import models
-from uuid import uuid4
 from datetime import datetime
-from sqlalchemy.ext.declarative import declarative_base
+from uuid import uuid4
+
 from sqlalchemy import Column, DateTime, String
+from sqlalchemy.ext.declarative import declarative_base
+
+import models
 
 Base = declarative_base()
 
@@ -30,11 +32,11 @@ class BaseModel:
             **kwargs (dict): Key/value pairs of attributes.
         """
         if kwargs:
-            for k, v in kwargs.items():
-                if k == "created_at" or k == "updated_at":
-                    v = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f")
-                if k != "__class__":
-                    setattr(self, k, v)
+            for key, value in kwargs.items():
+                if key in ["created_at", "updated_at"]:
+                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                if key != "__class__":
+                    setattr(self, key, value)
         if "id" not in kwargs:
             self.id = str(uuid4())
         if "created_at" not in kwargs:
@@ -46,8 +48,7 @@ class BaseModel:
             self.created_at = self.updated_at = datetime.utcnow()
 
     def save(self):
-        """Updates updated_at with the current datetime.
-        """
+        """Updates updated_at with the current datetime."""
         self.updated_at = datetime.utcnow()
         models.storage.new(self)
         models.storage.save()
@@ -62,16 +63,14 @@ class BaseModel:
         new_dict["__class__"] = str(type(self).__name__)
         new_dict["created_at"] = self.created_at.isoformat()
         new_dict["updated_at"] = self.updated_at.isoformat()
-        if "_sa_instance_state" in new_dict.keys():
+        if "_sa_instance_state" in new_dict:
             del new_dict["_sa_instance_state"]
         return new_dict
 
     def delete(self):
-        """Delete the current instance from storage.
-        """
+        """Delete the current instance from storage."""
         models.storage.delete(self)
 
     def __str__(self):
-        """Return the print/str representation of the BaseModel instance.
-        """
-        return "[{}] ({}) {}".format(type(self).__name__, self.id, self.__dict__)
+        """Return the print/str representation of the BaseModel instance."""
+        return f"[{type(self).__name__}] ({self.id}) {self.__dict__}"
