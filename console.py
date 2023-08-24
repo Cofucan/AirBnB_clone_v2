@@ -3,7 +3,7 @@
 import cmd
 import sys
 
-from typing import List, Union
+from typing import List, Union, Dict
 
 from models.base_model import BaseModel
 from models.__init__ import storage
