@@ -47,9 +47,5 @@ if ! grep -q "location /hbnb_static/" "$nginx_config"; then
     # sudo awk -v config="$config_to_add" '/^}$/ {print config} {print} ' "$nginx_config" > temp && mv temp "$nginx_config"
     sudo awk -v config="$config_to_add" '/^}$/ {print config} {print} ' "$nginx_config" | sudo tee "$nginx_config" > /dev/null
 
-    echo "Configuration added."
-else
-    echo "Configuration already exists."
-fi
-
+# Restart Nginx
 sudo service nginx restart
