@@ -44,8 +44,12 @@ nginx_config="/etc/nginx/sites-available/default"
 # Check if the configuration already exists
 if ! grep -q "location /hbnb_static/" "$nginx_config"; then
     # Configuration does not exist, add it using awk
-    # sudo awk -v config="$config_to_add" '/^}$/ {print config} {print} ' "$nginx_config" > temp && mv temp "$nginx_config"
-    sudo awk -v config="$config_to_add" '/^}$/ {print config} {print} ' "$nginx_config" | sudo tee "$nginx_config" > /dev/null
+    sudo awk -v config="$config_to_add" '/^}$/ {print config} {print} ' "$nginx_config" > temp && mv temp "$nginx_config"
+    # sudo awk -v config="$config_to_add" '/^}$/ {print config} {print} ' "$nginx_config" | sudo tee "$nginx_config" > /dev/null
+
+    echo "Configuration added."
+else
+    echo "Configuration already exists."
 fi
 
 sudo service nginx restart
