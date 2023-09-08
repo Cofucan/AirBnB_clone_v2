@@ -90,9 +90,13 @@ def do_deploy(archive_path):
         # Remove the archive from the web server
         run('rm /tmp/{}'.format(os.path.basename(archive_path)))
 
+        # Move the files one directory up and delete the folder
+        run('mv {}/web_static/* {}'.format(release_dir, release_dir))
+        run('rm -rf {}/web_static'.format(release_dir))
+
         # Delete the current symbolic link
         current_link = '/data/web_static/current'
-        run('rm -f {}'.format(current_link))
+        run('rm -rf {}'.format(current_link))
 
         # Create a new symbolic link
         run('ln -s {} {}'.format(release_dir, current_link))
