@@ -64,46 +64,82 @@ def do_pack():
         return None
 
 
+# def do_deploy(archive_path):
+#     """
+#     Deploy archive to web servers
+#     """
+#     if not os.path.exists(archive_path):
+#         return False
+#
+#     try:
+#         # Get the archive filename without extension
+#         archive_name = os.path.basename(archive_path).split('.')[0]
+#
+#         # Upload the archive to /tmp/ directory on the web servers
+#         put(archive_path, '/tmp/')
+#
+#         # Create the release directory
+#         release_dir = '/data/web_static/releases/{}'.format(archive_name)
+#         run('mkdir -p {}'.format(release_dir))
+#
+#         # Uncompress the archive to the release directory
+#         run('tar -xzf /tmp/{} -C {}'.format(
+#             os.path.basename(archive_path), release_dir
+#         ))
+#
+#         # Remove the archive from the web server
+#         run('rm /tmp/{}'.format(os.path.basename(archive_path)))
+#
+#         # Move the files one directory up and delete the folder
+#         run('mv {}/web_static/* {}'.format(release_dir, release_dir))
+#         run('rm -rf {}/web_static'.format(release_dir))
+#
+#         # Delete the current symbolic link
+#         current_link = '/data/web_static/current'
+#         run('rm -rf {}'.format(current_link))
+#
+#         # Create a new symbolic link
+#         run('ln -s {} {}'.format(release_dir, current_link))
+#
+#         # Restart the nginx service (if necessary)
+#         run('sudo service nginx restart')
+#
+#         return True
+#     except Exception:
+#         return False
+
 def do_deploy(archive_path):
+    """Deploy archive file
+
+    Args:
+        archive_path - path of archive file
     """
-    Deploy archive to web servers
-    """
-    if not os.path.exists(archive_path):
-        return False
 
-    try:
-        # Get the archive filename without extension
-        archive_name = os.path.basename(archive_path).split('.')[0]
+    if os.path.exists(archive_path):
+        try:
+            """Split archive path"""
+            archive = archive_path.split('/')[1]
+            dirname = archive.split('.')[0]
 
-        # Upload the archive to /tmp/ directory on the web servers
-        put(archive_path, '/tmp/')
+            """Save folder paths in variables"""
+            path = '/data/web_static/releases/{}'.format(dirname)
+            tmp_location = '/tmp/{}'.format(archive)
 
-        # Create the release directory
-        release_dir = '/data/web_static/releases/{}'.format(archive_name)
-        run('mkdir -p {}'.format(release_dir))
+            """Upload archive to the server"""
+            put(archive_path, '/tmp/')
 
-        # Uncompress the archive to the release directory
-        run('tar -xzf /tmp/{} -C {}'.format(
-            os.path.basename(archive_path), release_dir
-        ))
+            """Run remote commands on the server"""
+            run('mkdir -p {}'.format(path))
+            run('tar -xzf {} -C {}'.format(tmp_location, path))
+            run('rm {}'.format(tmp_location))
+            run('mv {}/web_static/* {}'.format(path, path))
+            run('rm -rf {}/web_static'.format(path))
+            run('rm -rf /data/web_static/current')
+            run('ln -sf {} /data/web_static/current'.format(path))
+            run('sudo service nginx restart')
 
-        # Remove the archive from the web server
-        run('rm /tmp/{}'.format(os.path.basename(archive_path)))
-
-        # Move the files one directory up and delete the folder
-        run('mv {}/web_static/* {}'.format(release_dir, release_dir))
-        run('rm -rf {}/web_static'.format(release_dir))
-
-        # Delete the current symbolic link
-        current_link = '/data/web_static/current'
-        run('rm -rf {}'.format(current_link))
-
-        # Create a new symbolic link
-        run('ln -s {} {}'.format(release_dir, current_link))
-
-        run('sudo service nginx restart')
-
-        return True
-
-    except Exception:
+            return True
+        except Exception:
+            return False
+    else:
         return False
