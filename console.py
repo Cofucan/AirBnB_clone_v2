@@ -3,8 +3,6 @@
 import cmd
 import sys
 
-# from typing import List, Union, Dict
-
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -53,7 +51,7 @@ class HBNBCommand(cmd.Cmd):
         """
         _cmd = _cls = _id = _args = ""  # initialize line elements
 
-        # scan for general formating - i.e '.', '(', ')'
+        # scan for general formatting - i.e '.', '(', ')'
         if "." not in line or "(" not in line or ")" not in line:
             return line
 
@@ -122,42 +120,9 @@ class HBNBCommand(cmd.Cmd):
         print("Exits the program without formatting\n")
 
     def emptyline(self):
-        """Overrides the emptyline method of CMD"""
+        """Overrides the empty line method of CMD"""
         pass
 
-    # def do_create(self, line):
-    #         """Usage: create <class> <key 1>=<value 2> <key 2>=<value 2> ...
-    #         Create a new class instance with given keys/val and print its id.
-    #         """
-    #         try:
-    #             if not line:
-    #                 raise SyntaxError()
-    #             my_list = line.split(" ")
-
-    #             kwargs = {}
-    #             for i in range(1, len(my_list)):
-    #                 key, value = tuple(my_list[i].split("="))
-    #                 if value[0] == '"':
-    #                     value = value.strip('"').replace("_", " ")
-    #                 else:
-    #                     try:
-    #                         value = eval(value)
-    #                     except (SyntaxError, NameError):
-    #                         continue
-    #                 kwargs[key] = value
-
-    #             if kwargs == {}:
-    #                 obj = eval(my_list[0])()
-    #             else:
-    #                 obj = eval(my_list[0])(**kwargs)
-    #                 storage.new(obj)
-    #                 storage.save()
-    #             print(obj.id)
-
-    #         except SyntaxError:
-    #             print("** class name missing **")
-    #         except NameError:
-    #             print("** class doesn't exist **")
 
     def do_create(self, line):
         """Create an object of any class"""
@@ -222,59 +187,6 @@ class HBNBCommand(cmd.Cmd):
         new_instance.save()
         print(new_instance.id)
 
-    # def do_create(self, args):
-    #     """Create an object of any class"""
-    #     if not args:
-    #         print("** class name missing **")
-    #         return
-
-    #     args = args.split()
-    #     if args[0] not in HBNBCommand.classes:
-    #         print("** class doesn't exist **")
-    #         return
-
-    #     params = self.parse_params(args[1:])
-    #     if not params:
-    #         return
-
-    #     new_instance = HBNBCommand.classes[args[0]]()
-    #     for key, value in params.items():
-    #         setattr(new_instance, key, value)
-
-    #     storage.save()
-    #     print(new_instance.id)
-
-    # def parse_params(self, params: List[str]) -> Union[dict, None]:
-    #     params_dict: Dict = {}
-    #     for param in params:
-    #         kv_pair: List = param.split("=")  # Separate the key and value
-    #         # If there are not 2 elements or elements contain spaces
-    #         if len(kv_pair) != 2 or " " in kv_pair[0] or " " in kv_pair[1]:
-    #             continue
-
-    #         key: str = kv_pair[0]
-    #         value: str = kv_pair[1]
-
-    #         # If value is an integer
-    #         if value.isnumeric():
-    #             params_dict[key] = int(value)
-    #             continue
-
-    #         # If value is a float
-    #         try:
-    #             params_dict[key] = float(value)
-    #             continue
-    #         except ValueError:
-    #             pass
-
-    #         # If value is a string
-    #         if value.startswith('"') and value.endswith('"'):
-    #             value = value.strip('"')
-
-    #             value = " ".join(value.split("_"))
-    #             params_dict[key] = value
-
-    #     return params_dict
 
     def help_create(self):
         """Help information for the create method"""
