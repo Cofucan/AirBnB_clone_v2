@@ -28,17 +28,15 @@ class DBStorage:
 
     def __init__(self):
         """Initialize a new DBStorage instance."""
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
-                                      format(getenv("HBNB_MYSQL_USER"),
-                                             getenv("HBNB_MYSQL_PWD"),
-                                             getenv("HBNB_MYSQL_HOST"),
-                                             getenv("HBNB_MYSQL_DB")),
-                                      pool_pre_ping=True)
+        self.__engine = create_engine(
+            f'mysql+mysqldb://{getenv("HBNB_MYSQL_USER")}:{getenv("HBNB_MYSQL_PWD")}@{getenv("HBNB_MYSQL_HOST")}/{getenv("HBNB_MYSQL_DB")}',
+            pool_pre_ping=True,
+        )
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Query on the curret database session all objects of the given class.
+        """Query on the current database session all objects of the given class.
 
         If cls is None, queries all types of objects.
 
@@ -46,22 +44,17 @@ class DBStorage:
             Dict of queried classes in the format <class name>.<obj id> = obj.
         """
         if cls is None:
-            objs = self._extracted_from_all_10()
+            objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(User).all())
+            objs.extend(self.__session.query(Place).all())
+            objs.extend(self.__session.query(Review).all())
+            objs.extend(self.__session.query(Amenity).all())
         else:
             if isinstance(cls, str):
                 cls = eval(cls)
             objs = self.__session.query(cls)
         return {f"{type(o).__name__}.{o.id}": o for o in objs}
-
-    # TODO Rename this here and in `all`
-    def _extracted_from_all_10(self):
-        result = self.__session.query(State).all()
-        result.extend(self.__session.query(City).all())
-        result.extend(self.__session.query(User).all())
-        result.extend(self.__session.query(Place).all())
-        result.extend(self.__session.query(Review).all())
-        result.extend(self.__session.query(Amenity).all())
-        return result
 
     def new(self, obj):
         """Add obj to the current database session."""

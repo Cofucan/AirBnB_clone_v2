@@ -3,7 +3,7 @@
 
 -> If the environmental variable 'HBNB_TYPE_STORAGE' is set to 'db',
    creates a database storage engine (DBStorage).
--> Otherwise, creates a file storage engine (FileStorage).
+-> Otherwise, create a file storage engine (FileStorage).
 """
 from os import getenv
 
