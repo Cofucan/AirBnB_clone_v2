@@ -28,15 +28,18 @@ class DBStorage:
 
     def __init__(self):
         """Initialize a new DBStorage instance."""
-        self.__engine = create_engine(
-            f'mysql+mysqldb://{getenv("HBNB_MYSQL_USER")}:{getenv("HBNB_MYSQL_PWD")}@{getenv("HBNB_MYSQL_HOST")}/{getenv("HBNB_MYSQL_DB")}',
-            pool_pre_ping=True,
-        )
+        USER = getenv("HBNB_MYSQL_USER")
+        PWD = getenv("HBNB_MYSQL_PWD")
+        HOST = getenv("HBNB_MYSQL_HOST")
+        DB = getenv("HBNB_MYSQL_DB")
+        URL = f"mysql+mysqldb://{USER}:{PWD}@{HOST}:3306/{DB}"
+        self.__engine = create_engine(URL, pool_pre_ping=True)
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """Query on the current database session all objects of the given class.
+        """
+        Query on the current database session all objects of the given class.
 
         If cls is None, queries all types of objects.
 
