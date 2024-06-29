@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""module that defines a class to manage file storage for hbnb clone"""
+"""A module that defines a class to manage file storage for hbnb clone"""
 import json
 
 from models.amenity import Amenity

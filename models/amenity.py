@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This is the Amenity class."""
+"""The Amenity class."""
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This is a Place class."""
+"""A Place class."""
 
 from os import getenv
 
