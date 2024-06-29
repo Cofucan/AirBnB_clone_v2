@@ -1,4 +1,4 @@
-# Manifest that configures an Nginx web server
+#Manifest that configures an Nginx web server
 exec { '/usr/bin/env apt -y update' : }
 -> package { 'nginx':
   ensure => installed,
