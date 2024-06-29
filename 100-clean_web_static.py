@@ -12,7 +12,7 @@ from fabric.api import env, put, run, local
 # Web server IPs
 env.hosts = ['34.234.201.201', '52.3.249.208']
 
-# Set the SSH key and username as environment variables
+# Sets the SSH key and username as environment variables
 env.key_filename = '~/.ssh/id_rsa'
 env.user = 'ubuntu'
 
@@ -20,10 +20,10 @@ env.user = 'ubuntu'
 def do_pack():
     """Generates a .tgz archive"""
     try:
-        # Get the current working directory (where the script is located)
+        #Get the current working directory (where the script is located)
         current_directory = os.getcwd()
 
-        # Define the name of the archive
+        #Define the name of the archive
         timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         archive_name = 'web_static_{}.tgz'.format(timestamp)
 
