@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""test for BaseModel"""
+"""tests for BaseModel"""
 import os
 import unittest
 

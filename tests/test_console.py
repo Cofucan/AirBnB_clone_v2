@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Defines unittests for console.py."""
+"""This defines unittests for console.py."""
 import os
 from io import StringIO
 from unittest.mock import patch

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""test for city"""
+"""tests for city"""
 import os
 import unittest
 
