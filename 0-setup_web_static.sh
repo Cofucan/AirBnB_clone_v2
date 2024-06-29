@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# This script sets up web servers for the AirBnB Clone - Deploy Static project
+# A script that sets up web servers for the AirBnB Clone - Deploy Static project
 
 # Check if Nginx is installed, and install it if not
 if ! dpkg -l nginx >/dev/null 2>&1; then
