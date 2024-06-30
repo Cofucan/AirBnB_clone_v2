@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""test for amenity"""
+"""tests for amenity"""
 import os
 import unittest
 

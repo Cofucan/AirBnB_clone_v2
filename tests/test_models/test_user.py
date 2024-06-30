@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""test for user"""
+"""tests for user"""
 import os
 import unittest
 

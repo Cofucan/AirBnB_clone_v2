@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""test for review"""
+"""tests for review"""
 import os
 import unittest
 
