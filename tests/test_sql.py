@@ -1,5 +1,5 @@
 #!/usr/bin/pyhthon3
-"""Module for the test of MySQL"""
+"""Modules for the test of MySQL"""
 import io
 import os
 import unittest

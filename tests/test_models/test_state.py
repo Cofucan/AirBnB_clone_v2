@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""test for state"""
+"""tests for state"""
 import os
 import unittest
 

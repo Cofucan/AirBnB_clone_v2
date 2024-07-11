@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Defines the State class."""
+"""This defines the State class."""
 
 import models
 from os import getenv

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This is a Review class."""
+"""Review class."""
 from sqlalchemy import Column, ForeignKey, String
 from sqlalchemy.orm import relationship
 

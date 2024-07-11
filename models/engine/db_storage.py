@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""the DBStorage engine."""
+"""The DBStorage engine."""
 
 from os import getenv
 
